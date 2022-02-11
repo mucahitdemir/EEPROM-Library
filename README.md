@@ -1,4 +1,4 @@
-# Aspilsan Energy. Software team driver development task
+# Aspilsan Energy. Software Team
 
  EEPROM-Library with I2C Communication Protocol
 
