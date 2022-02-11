@@ -1,0 +1,4 @@
+eeprom.c:46:10:bytes	16	static
+eeprom.c:55:6:EEPROM_Write	80	static
+eeprom.c:82:6:EEPROM_Read	80	static
+eeprom.c:107:6:EEPROM_Page_Erease	176	static
