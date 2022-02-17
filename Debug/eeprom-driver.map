@@ -20,7 +20,6 @@ Common symbol       size              file
 
 uwTick              0x4               Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.o
 pFlash              0x20              Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_flash.o
-bytes_temp          0x4               Core/Src/eeprom.o
 
 Discarded input sections
 
@@ -92,15 +91,16 @@ Discarded input sections
  .text          0x0000000000000000        0x0 Core/Src/eeprom.o
  .data          0x0000000000000000        0x0 Core/Src/eeprom.o
  .bss           0x0000000000000000        0x0 Core/Src/eeprom.o
- .text.bytes    0x0000000000000000       0x30 Core/Src/eeprom.o
+ .text.Calculation_Remaining_Bytes
+                0x0000000000000000       0x30 Core/Src/eeprom.o
  .text.EEPROM_Write
                 0x0000000000000000      0x130 Core/Src/eeprom.o
  .text.EEPROM_Read
                 0x0000000000000000      0x128 Core/Src/eeprom.o
  .text.EEPROM_Page_Erease
                 0x0000000000000000       0x68 Core/Src/eeprom.o
- .debug_info    0x0000000000000000     0x1218 Core/Src/eeprom.o
- .debug_abbrev  0x0000000000000000      0x251 Core/Src/eeprom.o
+ .debug_info    0x0000000000000000     0x11f6 Core/Src/eeprom.o
+ .debug_abbrev  0x0000000000000000      0x23e Core/Src/eeprom.o
  .debug_aranges
                 0x0000000000000000       0x38 Core/Src/eeprom.o
  .debug_ranges  0x0000000000000000       0x28 Core/Src/eeprom.o
@@ -159,13 +159,12 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x16 Core/Src/eeprom.o
  .debug_macro   0x0000000000000000       0x35 Core/Src/eeprom.o
  .debug_macro   0x0000000000000000       0x20 Core/Src/eeprom.o
- .debug_line    0x0000000000000000      0x935 Core/Src/eeprom.o
- .debug_str     0x0000000000000000    0x63805 Core/Src/eeprom.o
+ .debug_line    0x0000000000000000      0x937 Core/Src/eeprom.o
+ .debug_str     0x0000000000000000    0x63810 Core/Src/eeprom.o
  .comment       0x0000000000000000       0x54 Core/Src/eeprom.o
  .debug_frame   0x0000000000000000       0x9c Core/Src/eeprom.o
  .ARM.attributes
                 0x0000000000000000       0x2c Core/Src/eeprom.o
- COMMON         0x0000000000000000        0x4 Core/Src/eeprom.o
  .group         0x0000000000000000        0xc Core/Src/main.o
  .group         0x0000000000000000        0xc Core/Src/main.o
  .group         0x0000000000000000        0xc Core/Src/main.o

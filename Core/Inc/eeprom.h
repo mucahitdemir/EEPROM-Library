@@ -17,6 +17,7 @@
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
+
 #ifndef INC_EEPROM_H_
 #define INC_EEPROM_H_
 
