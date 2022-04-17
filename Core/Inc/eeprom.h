@@ -35,4 +35,4 @@ void EEPROM_Page_Erease(uint16_t page);
 #endif /* INC_EEPROM_H_ */
 
 
-/************************ (C) COPYRIGHT Aspilsan Energy Co. *****END OF FILE****/
+
