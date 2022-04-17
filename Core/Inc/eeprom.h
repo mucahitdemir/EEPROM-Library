@@ -7,11 +7,6 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2022 Aspilsan Energy.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by Aspilsan Energy Co.
-  *
   ******************************************************************************
   */
 /* USER CODE END Header */
