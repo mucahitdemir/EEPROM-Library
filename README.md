@@ -1,1 +1,1 @@
-
+EEPROM, or Electrically Erasable Programmable Read-Only Memory, is a type of device that allows you to store small chunks of data and retrieve it later even if the device has been power cycled. A lot of modern microcontrollers – such as the ATmega328 – contain some built-in EEPROM, but that doesn't mean that you can't add more! Serial EEPROM devices like the Microchip 24-series EEPROM allow you to add more memory to any device that can speak I²C. Today we're going to learn how to read and write serial EEPROM devices 
