@@ -23,29 +23,29 @@ extern I2C_HandleTypeDef hi2c1;
 /******************************Define the model of EEPROM***************************************/
 
 //#define M24M01
-#define M24512
-//#define M24256
+//#define M24512
+#define M24256
 
 
 /****************************** Property definition of EEPROM *******************************/
 
 #ifdef M24512
-#define PAGE_SIZE 						128
-#define EEPROM_DATA_SIZE 				512
-#define PAGE_NUMBER 					(EEPROM_DATA_SIZE/PAGE_SIZE)
+#define EEPROM_PAGE_SIZE 				128
+#define EEPROM_DATA_SIZE 				512*1024
+#define PAGE_NUMBER 					(EEPROM_DATA_SIZE/EEPROM_PAGE_SIZE)
 #endif
 
 
 #ifdef M24256
-#define PAGE_SIZE 						64
-#define EEPROM_DATA_SIZE 				256
-#define PAGE_NUMBER 					(EEPROM_DATA_SIZE/PAGE_SIZE)
+#define EEPROM_PAGE_SIZE 				64
+#define EEPROM_DATA_SIZE 				256*1024
+#define PAGE_NUMBER 					(EEPROM_DATA_SIZE/EEPROM_PAGE_SIZE)
 #endif
 
 #ifdef M24M01
-#define PAGE_SIZE 						256
-#define EEPROM_DATA_SIZE 				1024
-#define PAGE_NUMBER 					(EEPROM_DATA_SIZE/PAGE_SIZE)
+#define EEPROM_PAGE_SIZE 				256
+#define EEPROM_DATA_SIZE 				1024*1024
+#define PAGE_NUMBER 					(EEPROM_DATA_SIZE/EEPROM_PAGE_SIZE)
 #endif
 
 
@@ -54,7 +54,7 @@ extern I2C_HandleTypeDef hi2c1;
   *
   * @brief			-	Calculation of remaining bytes
   * @brief			-	This function is used to find the remaining bytes
-  * 				-   in order to detect if the (size + offset) exceeds PAGE_SIZE
+  * 				-   in order to detect if the (size + offset) exceeds EEPROM_PAGE_SIZE
   *
   * @param			-	offset 	(offset of the given page)
   * @param			-	size	(size of the data)
@@ -68,13 +68,13 @@ uint16_t Calculation_Remaining_Bytes(uint16_t size,uint16_t offset)
 {
 
 
-	if((size+offset)<PAGE_SIZE)
+	if((size+offset)<EEPROM_PAGE_SIZE)
 
 		return size;
 
 	else
 
-		return PAGE_SIZE;
+		return EEPROM_PAGE_SIZE-offset;
 }
 
 /*********************************************************************
@@ -84,7 +84,7 @@ uint16_t Calculation_Remaining_Bytes(uint16_t size,uint16_t offset)
   * @brief			-	This function is used to write at specific page/pages from the given starting memory address
   *
   * @param			-	page 	(page number. Range from 0 to PAGE_NUMBER-1)
-  * @param			-	offset 	(offset of the given page. Range from 0 to PAGE_SIZE-1 )
+  * @param			-	offset 	(offset of the given page. Range from 0 to EEPROM_PAGE_SIZE-1 )
   * @param			-	data	(data buffer)
   * @param			-	size	(size of the data)
   *
@@ -95,21 +95,22 @@ uint16_t Calculation_Remaining_Bytes(uint16_t size,uint16_t offset)
   */
 void EEPROM_Write(uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
 {
-	int pAddr= log2(PAGE_SIZE);
-	//int pAddr = log(PAGE_SIZE)/log(2)
+	int pAddr= log2(EEPROM_PAGE_SIZE);
+	//int pAddr = log(EEPROM_PAGE_SIZE)/log(2)
 
 	uint16_t Starting_page =  page;
-	uint16_t Ending_page = page + ((size+offset)/PAGE_SIZE);
+	uint16_t Ending_page = page + ((size+offset)/EEPROM_PAGE_SIZE);
 
 	uint16_t number_of_pages =(Ending_page - Starting_page)+1;
 	uint16_t position = 0;
+
 
 	for(int i=0; i<number_of_pages;i++)
 	{
 		uint16_t MemAddr = Starting_page<< pAddr | offset;
 		uint16_t remainingbytes = Calculation_Remaining_Bytes(size,offset);
 
-		HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddr, 2, (uint8_t*)(&data[position]), remainingbytes, 1000);
+		HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddr, 2, &data[position], remainingbytes, 1000);
 		//HAL_I2C_Mem_Write(hi2c, DevAddress, MemAddress, MemAddSize, pData, Size, Timeout)
 		Starting_page += 1;
 		offset=0;
@@ -128,7 +129,7 @@ void EEPROM_Write(uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
   * @brief			-	This function is used to read specific page/pages from the given memory address
   *
   * @param			-	page 	(Page number. Range from 0 to PAGE_NUMBER-1)
-  * @param			-	offset 	(Offset of the given page. Range from 0 to PAGE_SIZE-1 )
+  * @param			-	offset 	(Offset of the given page. Range from 0 to EEPROM_PAGE_SIZE-1 )
   * @param			-	data	(data buffer)
   * @param			-	size	(size of the data)
   *
@@ -139,10 +140,10 @@ void EEPROM_Write(uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
   */
 void EEPROM_Read(uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
 {
-	int pAddr = log2(PAGESIZE);
+	int pAddr = log2(EEPROM_PAGE_SIZE);
 
 	uint16_t Starting_page =  page;
-	uint16_t Ending_page = page + ((size+offset)/PAGE_SIZE);
+	uint16_t Ending_page = page + ((size+offset)/EEPROM_PAGE_SIZE);
 
 	uint16_t number_of_pages =(Ending_page- Starting_page)+1;
 	uint16_t position = 0;
@@ -179,16 +180,16 @@ void EEPROM_Read(uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
 void EEPROM_Page_Erease(uint16_t page)
 {
 
-	int pAddr = log2(PAGE_SIZE);
+	int pAddr = log2(EEPROM_PAGE_SIZE);
 
 	uint16_t Starting_page =  page;
 	uint16_t MemAddr = Starting_page<< pAddr;
 
-	uint8_t data[PAGE_SIZE];
+	uint8_t data[EEPROM_PAGE_SIZE];
 
-	memset(data,0xFF,PAGE_SIZE);
+	memset(data,0xFF,EEPROM_PAGE_SIZE);
 
-	HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddr, 2, (uint8_t*)(&data), PAGE_SIZE, 100);
+	HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddr, 2, (uint8_t*)(&data), EEPROM_PAGE_SIZE, 100);
 
 	HAL_Delay(5);
 
