@@ -2,7 +2,7 @@
  * eeprom.c
  *
  *  Created on: Feb 4, 2022
- *      Author: Muco & Baykal
+ *      Author: Mucahit & Baykal
  */
 
 #include "eeprom.h"
