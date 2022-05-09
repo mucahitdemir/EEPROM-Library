@@ -111,7 +111,6 @@ void EEPROM_Write(uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
 		uint16_t remainingbytes = Calculation_Remaining_Bytes(size,offset);
 
 		HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddr, 2, &data[position], remainingbytes, 1000);
-		//HAL_I2C_Mem_Write(hi2c, DevAddress, MemAddress, MemAddSize, pData, Size, Timeout)
 		Starting_page += 1;
 		offset=0;
 		size = size - remainingbytes;
