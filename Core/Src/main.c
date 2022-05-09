@@ -69,13 +69,13 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
-	char buffer []= "Aspilsan EEPROM Library";
+	char buffer []= "Testing EEPROM Library";
 
 	uint8_t readbuffer[100];
 
 	uint8_t writebuffer[100];
 
-	uint8_t dataw[] ="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFfHello from Aspilsan Energy juniors of the software team";
+	uint8_t dataw[] ="Hello world";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
