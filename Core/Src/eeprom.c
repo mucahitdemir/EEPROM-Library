@@ -11,12 +11,10 @@
 #include "main.h"
 
 
-//Extern the I2C handle variable
 extern I2C_HandleTypeDef hi2c1;
 
 #define EEPROM_I2C &hi2c1
 
-//Define the address of EEPROM
 #define EEPROM_ADDR 0xA0
 
 
